@@ -1,3 +1,4 @@
+
 /*
  * Check's keyboard input for space bar. 
  * 13 is spacebar in ascii
@@ -59,7 +60,21 @@ function removeTask(e) {
 }
 
 
+// Fetch the list, myTaskList, from the server 
+var loadRequest = $.ajax({
+        type: 'GET',
+        url: "https://listalous.herokuapp.com/lists/myTaskList/" //the server: https://listalous.herokuapp.com/
+})
 
+l
+
+loadRequest.done(function(dataFromServer) {
+        var itemsData = dataFromServer.items
+
+        itemsData.forEach(function(itemData) {
+                enterNewTask();
+            })
+})
 
 /* Reference for study 
  *
