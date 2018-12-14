@@ -10,8 +10,15 @@
    </head>
    <body>
       <h1>To-Do List</h1>
-      <input id="myInput" placeholder="What needs to be done?" onfocus="this.placeholder=''" onfocusout="this.placeholder='What needs to be done?'">
+      <form id= 'myForm'>
+         <input id="userInput" name="userInputLi" placeholder="What needs to be done?" onfocus="this.placeholder=''" onfocusout="this.placeholder='What needs to be done?'">
+      </form>
       <ul id="myUnorderedList"></ul>
+      <ul id="myListTemplate">
+         <li class='myLi' data-id="placeholder id">
+            <div class="myLiDescription"> </div>
+         </li>
+      </ul>
    </body>
    <script src="toDoList.js"></script>
  </html>
