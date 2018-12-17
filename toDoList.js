@@ -1,17 +1,17 @@
 // Assigning variables using the jQuery selector, $()
 // $() fetches an item from the page (.HTML), specified by a class, id, or tag of the element(s) requested 
 var myLiTemplate = $('#myListTemplate .myLi')
-var myUL = $('#myUnorderedList')
+var myUL = $('#myUnorderedList') //the list of our page
 
-// Append a li submission to our list, myUnorderedList
-// all functions in enterNewTask are jQuery functions
-var enterNewTask = function(liData) {
+// Append a li submission to our list, myUnorderedList, which is the list of our page
+// all functions in addTasktoPage are jQuery functions
+var addTasktoPage = function(liData) {
     // create a li by using the template defined in .HTML so we can append to our list
     var myLi = myLiTemplate.clone();   
 
     // populate our new li with liData received from user input
     myLi.attr('data-id', liData.id); 
-    myLi.find('.myLiDescription').text(liData.myLiDescription);
+    myLi.find('.description').text(liData.description);
 
     if(liData.completed) {
         myLi.addClass('completed');
@@ -20,47 +20,48 @@ var enterNewTask = function(liData) {
     myUL.append(myLi);
 }
 
-// Fetch the list, listOnServer, from a server. 
-// Every time toDoList.js is loaded, e.g. refreshed, the browser will run the Javascript in this file.
-// So every time we refresh the page, our Javascript makes a request to the server, which responds with myTaskList 
-var loadRequest = $.ajax({
-        type: 'GET',
-        url: "https://listalous.herokuapp.com/lists/listOnServer/" //the server: https://listalous.herokuapp.com/
+// Retrieve data (listOnServer) from the DB 
+var pullRequest = $.ajax({
+    type: 'GET',
+    url: "https://listalous.herokuapp.com/lists/listOnServer/" //the server: https://listalous.herokuapp.com/
 })
 
 
-// Add data from the server (listOnServer) to our own list (myUnorderedList)
-loadRequest.done(function(dataFromServer) { // dataFromServer is an Event object that represents the event being executed which causes this function to execute
-        var listFromServer = dataFromServer.items;
+// When the pull is successful, update our page with the received data
+pullRequest.done(function(dataFromServer) { // dataFromServer is an Event object: represents the event that triggers this function
+    var listFromServer = dataFromServer.items;
 
-        // forEach() executes a provided function once for each array element
-        // For each item in listFromServer (liData), we run enterNewTask to add each item to our list
-        listFromServer.forEach(function(liData) { // liData is also an event object
-                enterNewTask(liData);
-        })
+    // forEach() executes a provided function once for each array element
+    // For each item (liData) in listFromServer, we run addTasktoPage to add each item to our page 
+    listFromServer.forEach(function(liData) { // liData is also an event object
+        addTasktoPage(liData);
+    })
 })
 
-// Ask the server to save a li submission into the DB
-$('#myForm').on('submit', function(e) { // attach a submit event to the myForm element
+// Add task to DB. 
+$('#myForm').on('submit', function(e) { // Add an event listener
 
-  // preventDefault() stops the default action of an element from happening
-  // prevents the page from refreshing until a li submission
-  e.preventDefault()
+    // preventDefault() stops the default action of an element from happening
+    // prevents the page from refreshing until a li submission
+    e.preventDefault()
 
-  // just to make .on() more clear to understand
-  alert("myForm had a submission");
+    // just to make .on() more clear to understand
+    alert("myForm had a submission");
   
-  var myUserInputLi = e.target.userInputLi.value
+    // get the value of userInput from the event (submitting in myForm)  
+    var myUserInput = e.target.userInput.value
 
-  var creationRequest = $.ajax({
-     type: 'POST',
-     url: "https://listalous.herokuapp.com/lists/listOnServer/items",
-     data: { description: liDescription, completed: false }
-   })
+    // Push the user input onto the server
+    var pushRequest = $.ajax({
+        type: 'POST',
+        url: "https://listalous.herokuapp.com/lists/listOnServer/items",
+        data: { description: myUserInput, completed: false }
+    })
 
-  creationRequest.done(function(itemDataFromServer) {
-    enterNewTask(itemDataFromServer)
-  })
+    // When the push is successful, update our page with the newly received data
+    pushRequest.done(function(itemDataFromServer) {
+        addTasktoPage(itemDataFromServer)
+    })
 })
 
 
@@ -102,12 +103,12 @@ document.body.onkeyup = function(e) {
     // In this case, e is a key press. 
     // When there is a keypress, this function will execute.
     if (e.keyCode == 13) { //the keyCode of our event. 13 is spacebar in ascii.
-        enterNewTask();
+        addTasktoPage();
     }
 };
 
 // Add a task to a list
-function enterNewTask() {
+function addTasktoPage() {
                 
     //get the value of the input id, myInput, from the HTML file
     var myTask = document.getElementById("userInput").value;
