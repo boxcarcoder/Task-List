@@ -98,7 +98,7 @@ $('#myUnorderedList').on('click', '.description', function(event) { // 2nd argum
 })
 
 
-
+// Remove a task from the list
 
 
 
