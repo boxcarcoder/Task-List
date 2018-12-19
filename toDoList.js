@@ -64,7 +64,7 @@ $('#myForm').on('submit', function(e) { // Add an event listener
     })
 })
 
-// When a task is clicked, it will be marked as complete
+// When a task is clicked, it will be marked as complete.
 $('#myUnorderedList').on('click', '.description', function(event) { // 2nd argument of jQuery's .on() specifies that the event handler
                                                                     // should only be attached to the specified child element.
     // Retrieve the li that has been clicked.                                                                
