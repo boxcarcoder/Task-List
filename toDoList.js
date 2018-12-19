@@ -1,10 +1,10 @@
-// Assigning variables using the jQuery selector, $()
-// $() fetches an item from the page (.HTML), specified by a class, id, or tag of the element(s) requested 
+// Assigning variables using the jQuery selector, $().
+// $() fetches an item from the page (.HTML), specified by a class, id, or tag of the element(s) requested.
 var myLiTemplate = $('#myListTemplate .myLi')
 var myUL = $('#myUnorderedList') //the list of our page
 
-// Append a li submission to our list, myUnorderedList, which is the list of our page
-// all functions in addTasktoPage are jQuery functions
+// Append a li submission to our list, myUnorderedList, which is the list of our page.
+// All functions in addTasktoPage are jQuery functions.
 var addTasktoPage = function(liData) {
     // create a li by using the template defined in .HTML so we can append to our list
     var myLi = myLiTemplate.clone();   
@@ -20,14 +20,14 @@ var addTasktoPage = function(liData) {
     myUL.append(myLi);
 }
 
-// Retrieve data (listOnServer) from the DB 
+// Retrieve data (listOnServer) from the DB. 
 var pullRequest = $.ajax({
     type: 'GET',
     url: "https://listalous.herokuapp.com/lists/listOnServer/" //the server: https://listalous.herokuapp.com/
 })
 
 
-// When the pull is successful, update our page with the received data
+// When the pull is successful, update our page with the data from the DB.
 pullRequest.done(function(dataFromServer) { // dataFromServer is an Event object: represents the event that triggers this function
     var listFromServer = dataFromServer.items;
 
@@ -64,6 +64,38 @@ $('#myForm').on('submit', function(e) { // Add an event listener
     })
 })
 
+// When a task is clicked, it will be marked as complete
+$('#myUnorderedList').on('click', '.description', function(event) { // 2nd argument of jQuery's .on() specifies that the event handler
+                                                                    // should only be attached to the specified child element.
+    // Retrieve the li that has been clicked.                                                                
+    var myLi = $(event.target).parent()
+
+    // Retrieve the completion status of the li.
+    var isItemCompleted = myLi.hasClass('completed')
+    
+    // Retrieve the id # of the li (which was assigned when we push a task to the DB).
+    var itemId = myLi.attr('data-id')
+
+    // Update the task's completion status onto the DB.
+    var updateRequest = $.ajax({
+        type: 'PUT',
+        url: "https://listalous.herokuapp.com/lists/listOnServer/items/" + itemId,
+        data: { completed: !isItemCompleted }
+     })
+
+    // When the update is successful, check the newly received data from the DB
+    updateRequest.done(function(itemData) {
+        if (itemData.completed) {
+          myLi.addClass('completed')
+          //alert(itemId + ": completed" )
+        } 
+        else {
+          myLi.removeClass('completed')
+          //alert(itemId + ": not completed" )
+        }
+    })
+
+})
 
 
 

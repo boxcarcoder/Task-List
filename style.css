@@ -53,3 +53,8 @@ li {
 li:hover {
   text-decoration: line-through;
 }
+
+.myLi.completed {
+  /*color: #C3C3C4;*/
+    text-decoration: line-through;
+}
