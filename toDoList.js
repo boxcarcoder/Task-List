@@ -2,6 +2,7 @@
 // $() fetches an item from the page (.HTML), specified by a class, id, or tag of the element(s) requested.
 var myLiTemplate = $('#myListTemplate .myLi')
 var myUL = $('#myUnorderedList') //the list of our page
+var userInputBox = $('#userInputID') 
 
 // Append a li submission to our list, myUnorderedList, which is the list of our page.
 // All functions in addTasktoPage are jQuery functions.
@@ -154,7 +155,16 @@ $('#myUnorderedList').on('click', '.delete-button', function(e) {
 
 })
 
-// testing
+// Check's keyboard input for enter. 
+document.body.onkeyup = function(e) {
+    // e is an Event object that represents the event being executed which causes this function to execute
+    // In this case, e is a key press. 
+    // When there is a keypress, this function will execute.
+    if (e.keyCode == 13) { //the keyCode of our event. 13 is spacebar in ascii.
+       document.getElementById('userInputID').value='';; 
+    }
+};
+
 
 
 
