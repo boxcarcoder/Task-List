@@ -38,6 +38,14 @@ pullRequest.done(function(dataFromServer) { // dataFromServer is an Event object
     })
 })
 
+
+// Clear page of tasks.
+var clearPage = function(e) {
+    myUL.empty();
+}
+
+
+
 // Add task to DB. 
 $('#myForm').on('submit', function(e) { // Add an event listener
 
@@ -46,7 +54,7 @@ $('#myForm').on('submit', function(e) { // Add an event listener
     e.preventDefault()
 
     // just to make .on() more clear to understand
-    alert("myForm had a submission");
+    // alert("myForm had a submission");
   
     // get the value of userInput from the event (submitting in myForm)  
     var myUserInput = e.target.userInput.value
@@ -64,20 +72,21 @@ $('#myForm').on('submit', function(e) { // Add an event listener
     })
 })
 
+
 // When a task is clicked, it will be marked as complete.
 $('#myUnorderedList').on('click', '.description', function(event) { // 2nd argument of jQuery's .on() specifies that the event handler
                                                                     // should only be attached to the specified child element.
     // Retrieve the li that has been clicked.                                                                
-    var myLi = $(event.target).parent()
+    let myLi = $(event.target).parent()
 
     // Retrieve the completion status of the li.
-    var isItemCompleted = myLi.hasClass('completed')
+    let isItemCompleted = myLi.hasClass('completed')
     
     // Retrieve the id # of the li (which was assigned when we push a task to the DB).
-    var itemId = myLi.attr('data-id')
+    let itemId = myLi.attr('data-id')
 
     // Update the task's completion status onto the DB.
-    var updateRequest = $.ajax({
+    let updateRequest = $.ajax({
         type: 'PUT',
         url: "https://listalous.herokuapp.com/lists/listOnServer/items/" + itemId,
         data: { completed: !isItemCompleted }
@@ -98,10 +107,52 @@ $('#myUnorderedList').on('click', '.description', function(event) { // 2nd argum
 })
 
 
+
 // Remove a task from the list
+$('#myUnorderedList').on('click', '.delete-button', function(e) {
+
+       // Retrieve the li that has been clicked.                                                                
+    let myLi = $(e.target).parent()
+   
+     // Retrieve the id # of the li (which was assigned when we push a task to the DB).
+    let itemId = myLi.attr('data-id')
+
+    // Update the task's completion status onto the DB.
+    let updateRequest = $.ajax({
+        type: 'DELETE',
+        url: "https://listalous.herokuapp.com/lists/listOnServer/items/" + itemId,
+        //success: function(result) {
+                //alert ("deleted");
+               
+        //}
+    })
+
+    updateRequest.done(function(dataFromServer) {
+        
+        let pullRequest = $.ajax({
+                type: 'GET',
+                url: "https://listalous.herokuapp.com/lists/listOnServer/" //the server: https://listalous.herokuapp.com/
+        })
+        
+            
+        pullRequest.done(function(dataFromServer) { 
+                
+                // clear tasks from local page first
+                clearPage(dataFromServer);
 
 
+                // get tasks located on DB (missing the deleted task now) 
+                let listFromServer = dataFromServer.items;
 
+                // for each task, draw onto local page
+                listFromServer.forEach(function(liData) { // liData is also an event object
+                     addTasktoPage(liData);
+                })
+               //alert("redrew list");
+        })
+    })
+
+})
 
 
 
