@@ -1,10 +1,10 @@
 // Assigning variables using the jQuery selector, $().
 // $() fetches an item from the page (.HTML), specified by a class, id, or tag of the element(s) requested.
 var myLiTemplate = $('#myListTemplate .myLi')
-var myUL = $('#myUnorderedList') //the list of our page
+var myOL = $('#myOrderedList') //the list of our page
 var userInputBox = $('#userInputID') 
 
-// Append a li submission to our list, myUnorderedList, which is the list of our page.
+// Append a li submission to our list, myOrderedList, which is the list of our page.
 // All functions in addTasktoPage are jQuery functions.
 var addTasktoPage = function(liData) {
     // create a li by using the template defined in .HTML so we can append to our list
@@ -18,7 +18,7 @@ var addTasktoPage = function(liData) {
         myLi.addClass('completed');
     }
 
-    myUL.append(myLi);
+    myOL.append(myLi);
 }
 
 // Retrieve data (listOnServer) from the DB. 
@@ -42,7 +42,7 @@ pullRequest.done(function(dataFromServer) { // dataFromServer is an Event object
 
 // Clear page of tasks.
 var clearPage = function(e) {
-    myUL.empty();
+    myOL.empty();
 }
 
 
@@ -75,7 +75,7 @@ $('#myForm').on('submit', function(e) { // Add an event listener
 
 
 // When a task is clicked, it will be marked as complete.
-$('#myUnorderedList').on('click', '.description', function(event) { // 2nd argument of jQuery's .on() specifies that the event handler
+$('#myOrderedList').on('click', '.description', function(event) { // 2nd argument of jQuery's .on() specifies that the event handler
                                                                     // should only be attached to the specified child element.
     // Retrieve the li that has been clicked.                                                                
     let myLi = $(event.target).parent()
@@ -110,7 +110,7 @@ $('#myUnorderedList').on('click', '.description', function(event) { // 2nd argum
 
 
 // Remove a task from the list
-$('#myUnorderedList').on('click', '.delete-button', function(e) {
+$('#myOrderedList').on('click', '.delete-button', function(e) {
 
        // Retrieve the li that has been clicked.                                                                
     let myLi = $(e.target).parent()
@@ -161,7 +161,7 @@ document.body.onkeyup = function(e) {
     // In this case, e is a key press. 
     // When there is a keypress, this function will execute.
     if (e.keyCode == 13) { //the keyCode of our event. 13 is spacebar in ascii.
-       document.getElementById('userInputID').value='';; 
+       document.getElementById('userInputID').value=''; 
     }
 };
 
@@ -214,10 +214,10 @@ function addTasktoPage() {
     myLi.appendChild(document.createTextNode("- " + myTask));
     
     //get the ul id, myList, from the HTML file
-    var myUL = document.getElementById("myUnorderedList");
+    var myOL = document.getElementById("myOrderedList");
 
-    //add myLi (with myTask) to myUL    
-    myUL.appendChild(myLi);
+    //add myLi (with myTask) to myOL    
+    myOL.appendChild(myLi);
 
     //-----------------------------------------------------------
     
