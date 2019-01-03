@@ -1,0 +1,23 @@
+{
+  "name": "todolistapi",
+  "version": "1.0.0",
+  "description": "RESTful todoListApi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boxcarcoder/RESTfulAPITutorial.git"
+  },
+  "keywords": [
+    "RESTful",
+    "API"
+  ],
+  "author": "Brendan Cheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/boxcarcoder/RESTfulAPITutorial/issues"
+  },
+  "homepage": "https://github.com/boxcarcoder/RESTfulAPITutorial#readme"
+}
