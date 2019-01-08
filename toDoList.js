@@ -113,10 +113,10 @@ $('#myUnorderedList').on('click', '.description', function(event) { // 2nd argum
 $('#myUnorderedList').on('click', '.delete-button', function(e) {
 
        // Retrieve the li that has been clicked.                                                                
-    let myLi = $(e.target).parent()
+    let myLi = $(e.target).parent();
    
      // Retrieve the id # of the li (which was assigned when we push a task to the DB).
-    let itemId = myLi.attr('data-id')
+    let itemId = myLi.attr('data-id');
 
     // Update the task's completion status onto the DB.
     let updateRequest = $.ajax({
@@ -161,7 +161,7 @@ document.body.onkeyup = function(e) {
     // In this case, e is a key press. 
     // When there is a keypress, this function will execute.
     if (e.keyCode == 13) { //the keyCode of our event. 13 is spacebar in ascii.
-       document.getElementById('userInputID').value='';; 
+       document.getElementById('userInputID').value=''; 
     }
 };
 
