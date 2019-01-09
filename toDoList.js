@@ -11,31 +11,35 @@ var addTasktoPage = function(liData) {
     var myLi = myLiTemplate.clone();   
 
     // populate our new li with liData received from user input
-    myLi.attr('data-id', liData.id); 
+    myLi.attr('data-id', liData._id); // _id is from mongoDB. liData is from mongoDB. 
     myLi.find('.description').text(liData.description);
 
     if(liData.completed) {
         myLi.addClass('completed');
     }
 
+    console.log("myLi: " + myLi);
     myUL.append(myLi);
 }
 
 // Retrieve data (listOnServer) from the DB. 
 var pullRequest = $.ajax({
     type: 'GET',
-    url: "https://listalous.herokuapp.com/lists/listOnServer/" //the server: https://listalous.herokuapp.com/
+    //url: "https://listalous.herokuapp.com/lists/listOnServer/" //the server: https://listalous.herokuapp.com/
+    url: "http://localhost:3000/list/" 
 })
 
 
 // When the pull is successful, update our page with the data from the DB.
 pullRequest.done(function(dataFromServer) { // dataFromServer is an Event object: represents the event that triggers this function
-    var listFromServer = dataFromServer.items;
+    var listFromServer = dataFromServer;
+    console.log("listFromServer: " + listFromServer);
 
     // forEach() executes a provided function once for each array element
     // For each item (liData) in listFromServer, we run addTasktoPage to add each item to our page 
     listFromServer.forEach(function(liData) { // liData is also an event object
         addTasktoPage(liData);
+        console.log("liData: " + liData.description);
     })
 })
 
@@ -63,8 +67,9 @@ $('#myForm').on('submit', function(e) { // Add an event listener
     // Push the user input onto the server
     var pushRequest = $.ajax({
         type: 'POST',
-        url: "https://listalous.herokuapp.com/lists/listOnServer/items",
-        data: { description: myUserInput, completed: false }
+        //url: "https://listalous.herokuapp.com/lists/listOnServer/items",
+        url: "http://localhost:3000/list/",
+        data: { description: myUserInput }
     })
 
     // When the push is successful, update our page with the newly received data
@@ -80,19 +85,24 @@ $('#myUnorderedList').on('click', '.description', function(event) { // 2nd argum
     // Retrieve the li that has been clicked.                                                                
     let myLi = $(event.target).parent()
 
+    console.log(event.target);
+
     // Retrieve the completion status of the li.
     let isItemCompleted = myLi.hasClass('completed')
     
     // Retrieve the id # of the li (which was assigned when we push a task to the DB).
-    let itemId = myLi.attr('data-id')
-
+    let itemId = myLi.attr('data-id') //data-id is defined in the HTML 
+        
     // Update the task's completion status onto the DB.
     let updateRequest = $.ajax({
         type: 'PUT',
-        url: "https://listalous.herokuapp.com/lists/listOnServer/items/" + itemId,
+        //url: "https://listalous.herokuapp.com/lists/listOnServer/items/" + itemId,
+        url: "http://localhost:3000/list/" + itemId,  
         data: { completed: !isItemCompleted }
-     })
-
+     }) 
+    
+    console.log('itemId: ' + itemId),
+    
     // When the update is successful, check the newly received data from the DB
     updateRequest.done(function(itemData) {
         if (itemData.completed) {
@@ -121,18 +131,22 @@ $('#myUnorderedList').on('click', '.delete-button', function(e) {
     // Update the task's completion status onto the DB.
     let updateRequest = $.ajax({
         type: 'DELETE',
-        url: "https://listalous.herokuapp.com/lists/listOnServer/items/" + itemId,
+        //url: "https://listalous.herokuapp.com/lists/listOnServer/items/" + itemId,
+        url: "http://localhost:3000/list/" + itemId 
+
         //success: function(result) {
                 //alert ("deleted");
                
         //}
     })
 
-    updateRequest.done(function(dataFromServer) {
+ /*   updateRequest.done(function(dataFromServer) {
+        
         
         let pullRequest = $.ajax({
                 type: 'GET',
-                url: "https://listalous.herokuapp.com/lists/listOnServer/" //the server: https://listalous.herokuapp.com/
+                //url: "https://listalous.herokuapp.com/lists/listOnServer/" //the server: https://listalous.herokuapp.com/
+                url: "http://localhost:3000/list/"    
         })
         
             
@@ -151,8 +165,7 @@ $('#myUnorderedList').on('click', '.delete-button', function(e) {
                 })
                //alert("redrew list");
         })
-    })
-
+    }) */
 })
 
 // Check's keyboard input for enter. 

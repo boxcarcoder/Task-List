@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
         Task = mongoose.model('Tasks'); // Task is now modeled after Tasks, which is of type TaskSchema
 
 
-// Task.xxx() are functions from MongoDB 
+// Task.xxx() are mongoose functions 
 
 
 // for /list
@@ -22,6 +22,7 @@ exports.create_a_task = function(request, response) {
                 if (err)
                         response.send(err);
                 response.json(task);
+                console.log(task);
         } );
 };
 
