@@ -1,11 +1,11 @@
 // Assigning variables using the jQuery selector, $().
 // $() fetches an item from the page (.HTML), specified by a class, id, or tag of the element(s) requested.
 var myLiTemplate = $('#myListTemplate .myLi')
-var myUL = $('#myUnorderedList') //the list of our page
+var myOL = $('#myOrderedList') //the list of our page
 var userInputBox = $('#userInputID') 
 var listFromServer = [];
 
-// Append a li submission to our list, myUnorderedList, which is the list of our page.
+// Append a li submission to our list, myOrderedList, which is the list of our page.
 // All functions in addTasktoPage are jQuery functions.
 var addTasktoPage = function(liData) {
     // create a li by using the template defined in .HTML so we can append to our list
@@ -45,7 +45,7 @@ pullRequest.done(function(dataFromServer) {
 
 // Clear page of tasks.
 var clearPage = function(e) {
-    myUL.empty();
+    myOL.empty();
 }
 
 
@@ -83,7 +83,7 @@ $('#myForm').on('submit', function(e) { // Add an event listener
 
 // When a task is clicked, it will be marked as complete.
 $('#myUnorderedList').on('click', '.description', function(event) { 
-        
+       
     // Retrieve the li that has been clicked.                                                                
     let myLi = $(event.target).parent()
 
@@ -119,7 +119,7 @@ $('#myUnorderedList').on('click', '.description', function(event) {
 
 
 // Remove a task from the list
-$('#myUnorderedList').on('click', '.delete-button', function(e) {
+$('#myOrderedList').on('click', '.delete-button', function(e) {
 
        // Retrieve the li that has been clicked.                                                                
     let myLi = $(e.target).parent();
@@ -183,5 +183,3 @@ document.body.onkeyup = function(e) {
  *
  *
  */
-
-
