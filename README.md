@@ -1,4 +1,8 @@
 # Task-List
-Basics of JS, CSS, HTML. In my .js file, we use the jQuery library.
 
-The addition of my own API calls and database is a work in progress now.
+This is the front-end of a simple task list. I use the jQuery library to manipulate HTML elements. 
+
+The backend, including my own built API, also incorporates MongoDB, Mongoose, and Express. 
+
+My backend code can be found here: https://github.com/boxcarcoder/Task-List-API
+
